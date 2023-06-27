@@ -1,9 +1,6 @@
-
-export const InputCity = ({onSubmitHandler, city, onInputHandler, }) => {
+export const InputCity = ({onInputHandler, onSubmitHandler, city}) => {
     //Need a search box input to write the name of the city I want to get weather data from 
-    // Need a search button to initialize the API call
-
-
+   
     return (
         <div className='input'>
            <input 
@@ -13,8 +10,9 @@ export const InputCity = ({onSubmitHandler, city, onInputHandler, }) => {
             onChange= {onInputHandler}
            />
            <button 
-           type='submit' 
-           onClick={onSubmitHandler}>
+            className= 'input_btn'
+            type='submit' 
+            onClick={onSubmitHandler}>
             Search
            </button>
         </div>
