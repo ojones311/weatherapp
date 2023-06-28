@@ -52,7 +52,7 @@ function App() {
         onSubmitHandler={onSubmitHandler}
       />
       <ShowWeather 
-        weatherData={weatherData}
+        data={weatherData}
       />
     </div>
   );
