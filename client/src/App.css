@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #d3e2fd;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.card-container {
+  background-color: #e6e9eb;
+  margin: auto;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +44,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+table {
+  text-align: center
 }
