@@ -1,3 +1,5 @@
+import {useState, useEffect} from 'react'
+import { getParameterNames, kelvinToFahrenheit, kelvinToCelsius} from '../helpers';
 
 export const ShowWeather = ({data}) => {
 
@@ -19,7 +21,8 @@ export const ShowWeather = ({data}) => {
     const longitude = data.coord ? data.coord.lon : null;
     const latitude = data.coord ? data.coord.lat : null;
 
-
+    const [temperatureData, setTemperatureData] = useState({})
+   
     const coordinateBearingMatcher = (measurement, degrees) => {
     
         let coordinate = ''
@@ -39,21 +42,27 @@ export const ShowWeather = ({data}) => {
 
         return coordinate
     }
+ 
+    useEffect(() => {
+        function populateTempsData(temperature, temp_min, temp_max){
+        
+            let parameterArr = getParameterNames(populateTempsData)
+            const tempsData = {}
 
-    const kelvinToFahrenheit = (temp) => {
-        //Fahrenheit equation (K − 273.15) × 9/5 + 32 = °F
-        if (temp){
-            temp = Math.round((temp - 273.15) * 9/5 + 32)
+            //matches parameter name to arguments iteratable; arguments index to parameterArr index
+            //potential for bug if you change parameter names from corresponding vars on lines 11-13
+            for (const arg in arguments){
+                // temperature                       //300
+                tempsData[parameterArr[arg]] = arguments[arg]
+            }
+            
+            setTemperatureData(tempsData)
         }
         
-        return temp
-    }
-
-    const kelvinToCelsius = (temp) => {
-        //Celsius equation C = K – 273.15
-        temp = Math.round(temp - 273.15)
-        return temp
-    }
+        populateTempsData(temperature, temp_min, temp_max)
+        
+    
+    },[temperature, temp_min, temp_max])
 
     return (
         <div className='card-container'>
@@ -67,8 +76,8 @@ export const ShowWeather = ({data}) => {
                 
                 {   temperature && 
                     <div>
-                        <h4>{kelvinToFahrenheit(temperature)}{'°F'}</h4>
-                        <h4>{kelvinToCelsius(temperature)}{'°C'}</h4>
+                        {/* <h4>{kelvinToFahrenheit(temperature)}{'°F'}</h4> */}
+                        {/* <h4>{kelvinToCelsius(temperature)}{'°C'}</h4> */}
                     </div>
                 }
             </div>
