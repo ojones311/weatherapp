@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { getParameterNames, kelvinToFahrenheit, kelvinToCelsius} from '../helpers';
+import { calculateDirectionFromDegrees, getParameterNames, getTime, kelvinToFahrenheit, kelvinToCelsius} from '../helpers';
 
 export const ShowWeather = ({data}) => {
 
@@ -7,6 +7,7 @@ export const ShowWeather = ({data}) => {
     const country = data.sys ? data.sys.country : null;
     const icon = data.weather ? data.weather[0].icon : null;
     const descriptor = data.weather ? data.weather[0].main : null;
+    const moreInfoDescription = data.weather ? data.weather[0].description : null
 
     const temperature = data.main ? data.main.temp : null;
     const temp_min = data.main ? data.main.temp_min : null;
@@ -17,9 +18,12 @@ export const ShowWeather = ({data}) => {
     const humidity = data.main ? data.main.humidity : null;
     const clouds =  data.clouds ? data.clouds.all : null;
     const wind = data.wind ? data.wind.speed : null;
+    const windDirection = data.wind ? data.wind.deg : null;
 
     const longitude = data.coord ? data.coord.lon : null;
     const latitude = data.coord ? data.coord.lat : null;
+    const time = data.dt ? data.dt : null;
+    const timeZone = data.timezone ? data.timezone : null;
 
     const [temperatureData, setTemperatureData] = useState({})
    
@@ -61,41 +65,58 @@ export const ShowWeather = ({data}) => {
         
         populateTempsData(temperature, temp_min, temp_max)
         
+       
     
     },[temperature, temp_min, temp_max])
 
     return (
         <div className='card-container'>
-            <div className='weather'>
-                <h4>Current weather conditions at:</h4>
-                <h3>{city}</h3>
-                <h3>{country}</h3>
-                <p>{coordinateBearingMatcher('latitude',latitude)}</p>
-                <p>{coordinateBearingMatcher('longitude',longitude)}</p>
-                <h3>{descriptor}</h3>
-                
-                {   temperature && 
-                    <div>
-                        {/* <h4>{kelvinToFahrenheit(temperature)}{'°F'}</h4> */}
-                        {/* <h4>{kelvinToCelsius(temperature)}{'°C'}</h4> */}
-                    </div>
-                }
-            </div>
-            
-            <div className='weather-icon'>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+            {temperature && 
+                <div>
+                    <div className='weather'>
+                        <p>{"Last Updated: "}{getTime(time, timeZone)}</p>
+                        <img alt={icon} src={`https://openweathermap.org/img/wn/${icon}@2x.png`} />
+                        <h3>{city}{', '}{country}</h3>
+                        <h4>{descriptor}{', '}{moreInfoDescription}</h4>
+                            <table className='temps'>
+                                <tbody>
+                                    <tr>
+                                        <td>{kelvinToFahrenheit(temperature)}{'°F'}</td>
+                                        <td>{kelvinToCelsius(temperature)}{'°C'}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                     
-                </table>
-            </div>
-            <div className='info-table'>
-            
-            </div>
-        </div>
+                        
+                    </div>
+                    
+                    <div className='weather-icon'>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>{'Humidity: '}{humidity}{' %'}</td>
+                                    <td>{'Clouds: '}{clouds}{' %'}</td>  
+                                </tr>
+                                <tr>
+                                    <td>{'Visibility: '}{visibility}{' meters'}</td>
+                                    <td>{'Wind: '}{wind}{' mph || '}{calculateDirectionFromDegrees(windDirection)}</td>
+                                </tr>
+                                <tr>
+                                    <td>{'Pressure: '}{pressure}{' hPa'}</td>
+                                    <td>
+                                        {coordinateBearingMatcher('latitude',latitude)}
+                                        {', '}{coordinateBearingMatcher('longitude',longitude)}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                    <div className='info-table'>
+                    
+                    </div>
+                </div>
+        }
+        </div>                     
     )
 }
