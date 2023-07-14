@@ -5,13 +5,15 @@ import {useState, useEffect} from 'react'
 import { Header } from './Components/Header';
 import { InputCity } from './Components/InputCity';
 import { ShowWeather } from './Components/ShowWeather';
+import { HourlyForecast } from './Components/HourlyForecast';
+import { WeatherMap } from './Components/WeatherMap'
 
 function App() {
 
   const [inputCity, setInputCity] = useState('')
   const [cityName, setCityName] = useState('')
   const [weatherData, setWeatherData] = useState({});
-  const [ error, setError ] = useState(false)
+  const [error, setError] = useState(false)
 
  
   useEffect(()=> {
@@ -54,6 +56,10 @@ function App() {
       <ShowWeather 
         data={weatherData}
       />
+      <HourlyForecast 
+        data={weatherData}
+      />
+      <WeatherMap />
     </div>
   );
 }

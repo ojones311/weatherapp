@@ -26,7 +26,7 @@ export const ShowWeather = ({data}) => {
     const timeZone = data.timezone ? data.timezone : null;
 
     const [temperatureData, setTemperatureData] = useState({})
-   
+
     const coordinateBearingMatcher = (measurement, degrees) => {
     
         let coordinate = ''
